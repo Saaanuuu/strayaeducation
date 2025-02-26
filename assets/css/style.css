@@ -1,0 +1,48 @@
+/* LOGIN */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #ececec;
+}
+
+/*------------ Login container ------------*/
+.box-area {
+  width: 400px;
+}
+
+/*------------ Left box (Gambar & Form) ------------*/
+.left-box {
+  padding: 20px;
+}
+
+/*------------ Form container ------------*/
+.form-container {
+  max-width: 300px;
+  width: 100%;
+}
+
+/*------------ Custom Placeholder ------------*/
+::placeholder {
+  font-size: 16px;
+}
+
+.rounded-4 {
+  border-radius: 20px;
+}
+.rounded-5 {
+  border-radius: 30px;
+}
+
+/*------------ Responsiveness ------------*/
+@media only screen and (max-width: 768px) {
+  .box-area {
+    width: 90%;
+  }
+  .featured-image img {
+    width: 150px;
+  }
+  .form-container {
+    max-width: 100%;
+  }
+}

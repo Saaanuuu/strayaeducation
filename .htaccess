@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /education/
+
+# Redirect dari / ke /index.php
+RewriteCond %{REQUEST_URI} ^/education/$
+RewriteRule ^$ index.php [L,R=301]
