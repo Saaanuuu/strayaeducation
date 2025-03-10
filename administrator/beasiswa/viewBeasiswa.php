@@ -184,11 +184,6 @@ if (isset($_POST['delete'])) {
                             <i class="fas fa-user"></i>
                         </div>
                         <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
-                            <li><a class="dropdown-item" href="?view=viewProfile"><i class="fas fa-user me-2"></i> Profile</a></li>
-                            <li><a class="dropdown-item" href="?view=changePassword"><i class="fas fa-lock me-2"></i> Change Password</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                             <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
                         </ul>
                     </li>
@@ -260,9 +255,18 @@ if (isset($_POST['delete'])) {
                                                 <td style="text-align: center;">
                                                     <img src="../../assets/img/fileImage/<?php echo $t_beasiswa['gambarBeasiswa']; ?>" alt="Beasiswa Image" width="300">
                                                 </td>
-                                                <td>
-                                                    <a href="#modalEditBeasiswa<?php echo $t_beasiswa['idBeasiswa']; ?>" data-bs-toggle="modal" title="Edit" class="btn btn-xs btn-primary"><i class="fa fa-edit" style="text-align: center;"></i></a>
-                                                    <a href="#modalDeleteBeasiswa<?php echo $t_beasiswa['idBeasiswa']; ?>" data-bs-toggle="modal" title="Hapus" class="btn btn-xs btn-danger"><i class="fa fa-trash" style="text-align: center;"></i></a>
+                                                <td style="text-align: center;">
+                                                    <div class="btn-group" role="group">
+                                                        <a href="#modalEditBeasiswa<?php echo $t_beasiswa['idBeasiswa']; ?>" data-bs-toggle="modal" title="Edit" class="btn btn-xs btn-primary">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <a href="#modalDeleteBeasiswa<?php echo $t_beasiswa['idBeasiswa']; ?>" data-bs-toggle="modal" title="Delete" class="btn btn-xs btn-danger">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                        <a href="viewDetailBeasiswa.php?id=<?php echo $t_beasiswa['idBeasiswa']; ?>" title="View Details" class="btn btn-xs btn-info">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php } ?>
@@ -509,8 +513,6 @@ if (isset($_POST['delete'])) {
                     </ul>
                 </div>
             </div>
-
-
 
             <div class="container copyright text-center mt-4">
                 <p>

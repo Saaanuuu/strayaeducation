@@ -68,11 +68,6 @@ session_start();
                 <i class="fas fa-user"></i>
               </div>
               <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
-                <li><a class="dropdown-item" href="?view=viewProfile"><i class="fas fa-user me-2"></i> Profile</a></li>
-                <li><a class="dropdown-item" href="?view=changePassword"><i class="fas fa-lock me-2"></i> Change Password</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
                 <li><a class="dropdown-item" href="administrator/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
               </ul>
             </li>
@@ -106,47 +101,43 @@ session_start();
         <div class="row gy-4">
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
             <h3>
-              Voluptatem dignissimos provident laboris nisi ut aliquip ex ea commodo
+              ABOUT STRAYA INSTITUTE
             </h3>
             <img src="assets/img/about.jpg" class="img-fluid rounded-4 mb-4" alt="" />
-            <p>
-              Ut fugiat ut sunt quia veniam. Voluptate perferendis perspiciatis quod nisi et.
-              Placeat debitis quia recusandae odit et consequatur voluptatem. Dignissimos pariatur
-              consectetur fugiat voluptas ea.
+            <p style="text-align: justify;">
+              Sejak 2018, Straya Language Institute telah berpengalaman mendampingi ribuan peserta mulai dari pelajar, mahasiswa, guru, dosen, tenaga kesehatan,
+              birokrat, hingga para profesional dalam meningkatkan kemampuan Bahasa Inggris mereka. Banyak di antara mereka yang berhasil meraih beasiswa dan menempuh
+              studi S1, S2, serta S3 di dalam dan luar negeri, sekaligus membangun karier gemilang di berbagai bidang.
             </p>
-            <p>
-              Temporibus nihil enim deserunt sed ea. Provident sit expedita aut cupiditate nihil
-              vitae quo officia vel. Blanditiis eligendi possimus et in cum. Quidem eos ut sint rem
-              veniam qui. Ut ut repellendus nobis tempore doloribus debitis explicabo similique sit.
-              Accusantium sed ut omnis beatae neque deleniti repellendus.
+            <p style="text-align: justify;">
+              Dengan tim pengajar berkualifikasi lulusan luar negeri, metode pembelajaran interaktif yang menyenangkan, serta layanan konsultasi dan interaksi 24 jam,
+              kami berkomitmen membantu setiap siswa meraih kompetensi Bahasa Inggris optimal. Dukungan menyeluruh ini memungkinkan mereka meraih kesuksesan akademik maupun profesional,
+              sekaligus membuka lebih banyak peluang dan pengalaman berharga.
             </p>
           </div>
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="250">
             <div class="content ps-0 ps-lg-5">
-              <p class="fst-italic">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <p class="fw-bold">
+                MENGAPA MEMILIH STRAYA LANGUAGE INSTITUTE?
               </p>
               <ul>
                 <li>
                   <i class="bi bi-check-circle-fill"></i>
-                  <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
+                  <span>Kurikulum yang disesuaikan dengan kebutuhan peserta.</span>
                 </li>
                 <li>
                   <i class="bi bi-check-circle-fill"></i>
-                  <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span>
+                  <span>Pengajar lulusan kampus bergengsi dalam dan luar negeri.</span>
                 </li>
                 <li>
                   <i class="bi bi-check-circle-fill"></i>
-                  <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate trideta
-                    storacalaperda mastiro dolore eu fugiat nulla pariatur.</span>
+                  <span>Pengajar merupakan awardee dan alumni berbagai beasiswa.</span>
                 </li>
               </ul>
-              <p>
-                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-                in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident
+              <p style="text-align: justify;">
+                Bersama Straya Language Institute, wujudkan impianmu untuk menguasai bahasa Inggris
+                dan meraih kesempatan belajar ke tingkat global!
               </p>
-
               <div class="position-relative mt-4">
                 <img src="assets/img/about-2.jpg" class="img-fluid rounded-4" alt="" />
               </div>
@@ -155,7 +146,7 @@ session_start();
         </div>
       </div>
     </section>
-    <!-- /About Section -->
+    <!-- /About Section -->
 
     <!-- Beasiswa Section -->
     <section id="beasiswa" class="beasiswa section">

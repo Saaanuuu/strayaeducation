@@ -115,11 +115,6 @@ if (isset($_POST['delete'])) {
                             <i class="fas fa-user"></i>
                         </div>
                         <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
-                            <li><a class="dropdown-item" href="?view=viewProfile"><i class="fas fa-user me-2"></i> Profile</a></li>
-                            <li><a class="dropdown-item" href="?view=changePassword"><i class="fas fa-lock me-2"></i> Change Password</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                             <li><a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
                         </ul>
                     </li>
