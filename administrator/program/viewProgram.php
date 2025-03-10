@@ -11,6 +11,7 @@ if (isset($_POST['save'])) {
     $namaProgram = htmlspecialchars($_POST['namaProgram']);
     $paketProgram = json_encode($_POST['paketProgram']);
     $priceProgram = json_encode($_POST['priceProgram']);
+    $kuotaProgram = json_encode($_POST['kuotaProgram']);
     $waktuProgram = json_encode($_POST['waktuProgram']);
     $benefitProgram = json_encode($_POST['benefitProgram']);
     $deskripsiProgram = htmlspecialchars($_POST['deskripsiProgram']);
@@ -20,8 +21,8 @@ if (isset($_POST['save'])) {
     $targetFilePath = $targetDir . $fileName;
 
     if (move_uploaded_file($_FILES["gambar"]["tmp_name"], $targetFilePath)) {
-        $query = "INSERT INTO t_program (namaProgram, paketProgram, priceProgram, waktuProgram, benefitProgram, deskripsiProgram, gambarProgram) 
-                  VALUES ('$namaProgram', '$paketProgram', '$priceProgram', '$waktuProgram', '$benefitProgram', '$deskripsiProgram', '$fileName')";
+        $query = "INSERT INTO t_program (namaProgram, paketProgram, priceProgram, kuotaProgram, waktuProgram, benefitProgram, deskripsiProgram, gambarProgram) 
+                  VALUES ('$namaProgram', '$paketProgram', '$priceProgram', '$kuotaProgram', '$waktuProgram', '$benefitProgram', '$deskripsiProgram', '$fileName')";
         mysqli_query($conn, $query);
         header("Location: viewProgram.php");
         exit();
@@ -33,9 +34,10 @@ if (isset($_POST['update'])) {
     $namaProgram = htmlspecialchars($_POST['namaProgram']);
     $deskripsiProgram = htmlspecialchars($_POST['deskripsiProgram']);
 
-    // Mengambil daftar paket, harga, waktu, dan benefit dari input form
+    // Ambil data dari form
     $paketProgram = json_encode($_POST['paketProgram'] ?? []);
     $priceProgram = json_encode($_POST['priceProgram'] ?? []);
+    $kuotaProgram = json_encode($_POST['kuotaProgram'] ?? []);
     $waktuProgram = json_encode($_POST['waktuProgram'] ?? []);
     $benefitProgram = json_encode($_POST['benefitProgram'] ?? []);
 
@@ -57,6 +59,7 @@ if (isset($_POST['update'])) {
                     deskripsiProgram='$deskripsiProgram', 
                     paketProgram='$paketProgram',
                     priceProgram='$priceProgram',
+                    kuotaProgram='$kuotaProgram',
                     waktuProgram='$waktuProgram',
                     benefitProgram='$benefitProgram',
                     gambarProgram='$fileName' 
@@ -68,6 +71,7 @@ if (isset($_POST['update'])) {
                 deskripsiProgram='$deskripsiProgram', 
                 paketProgram='$paketProgram',
                 priceProgram='$priceProgram',
+                kuotaProgram='$kuotaProgram',
                 waktuProgram='$waktuProgram',
                 benefitProgram='$benefitProgram'
                 WHERE idProgram='$idProgram'";
@@ -152,7 +156,20 @@ if (isset($_POST['delete'])) {
                     <li><a href="../index.php#manage">Manage User</a></li>
                     <li><a href="../beasiswa/viewBeasiswa.php">Beasiswa</a></li>
                     <li><a href="../program/viewProgram.php">Program</a></li>
-                    <li><a href="../logout.php">Logout</a></li>
+                    <li class="nav-item dropdown d-flex align-items-center">
+                        <span class="me-2 fw-bold text-white">Hello, <?= $_SESSION["fullName"] ?></span>
+                        <div class="profile-picture bg-light" id="userDropdown">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
+                            <li><a class="dropdown-item" href="?view=viewProfile"><i class="fas fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="?view=changePassword"><i class="fas fa-lock me-2"></i> Change Password</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
@@ -269,6 +286,10 @@ if (isset($_POST['delete'])) {
                                     <label>Price Program</label>
                                     <input type="text" name="priceProgram[]" class="form-control" required>
                                 </div>
+                                <div class="form-group">
+                                    <label>Kuota Program</label>
+                                    <input type="text" name="kuotaProgram[]" class="form-control" required>
+                                </div>
                                 <div class="form-group waktu-container">
                                     <label>Waktu Program</label>
                                     <div class="d-flex">
@@ -336,9 +357,9 @@ if (isset($_POST['delete'])) {
                                 <h6>Paket Program</h6>
 
                                 <?php
-                                // Ambil data program berdasarkan ID
                                 $paketPrograms = json_decode($d['paketProgram'], true) ?? [];
                                 $pricePrograms = json_decode($d['priceProgram'], true) ?? [];
+                                $kuotaPrograms = json_decode($d['kuotaProgram'], true) ?? [];
                                 $waktuPrograms = json_decode($d['waktuProgram'], true) ?? [];
                                 $benefitPrograms = json_decode($d['benefitProgram'], true) ?? [];
 
@@ -358,6 +379,12 @@ if (isset($_POST['delete'])) {
                                         <div class="form-group">
                                             <label>Price Program</label>
                                             <input type="text" name="priceProgram[]" value="<?php echo htmlspecialchars($pricePrograms[$index] ?? ''); ?>" class="form-control" required>
+                                        </div>
+
+                                        <br>
+                                        <div class="form-group">
+                                            <label>Kuota Program</label>
+                                            <input type="text" name="kuotaProgram[]" value="<?php echo htmlspecialchars($kuotaPrograms[$index] ?? ''); ?>" class="form-control" required>
                                         </div>
 
                                         <br>
@@ -404,7 +431,7 @@ if (isset($_POST['delete'])) {
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-save"></i>Save</button>
+                            <button type="submit" name="update" class="btn btn-primary"><i class="fa fa-save"></i>Save</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i> Close</button>
                         </div>
                     </form>
@@ -426,7 +453,7 @@ if (isset($_POST['delete'])) {
                         <h5 class="modal-title">
                             <span class="fw-mediumbold">Delete Program</span>
                         </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

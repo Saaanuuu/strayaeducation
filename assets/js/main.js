@@ -221,6 +221,34 @@
   window.addEventListener("load", navmenuScrollspy);
   document.addEventListener("scroll", navmenuScrollspy);
 
+  // Navbar Index
+  document.addEventListener("DOMContentLoaded", function () {
+    const userDropdown = document.getElementById("userDropdown");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+
+    if (userDropdown && dropdownMenu) {
+      userDropdown.addEventListener("mouseenter", function () {
+        dropdownMenu.classList.add("show");
+      });
+
+      userDropdown.addEventListener("mouseleave", function () {
+        dropdownMenu.classList.remove("show");
+      });
+
+      dropdownMenu.addEventListener("mouseenter", function () {
+        dropdownMenu.classList.add("show");
+      });
+
+      dropdownMenu.addEventListener("mouseleave", function () {
+        dropdownMenu.classList.remove("show");
+      });
+    } else {
+      console.log(
+        "Dropdown tidak ditemukan. Mungkin halaman ini tidak memerlukan dropdown."
+      );
+    }
+  });
+
   // Beasiswa & Program
   document.addEventListener("DOMContentLoaded", function () {
     console.log("JavaScript loaded");
@@ -378,6 +406,10 @@
               <div class="form-group">
                   <label>Price Program</label>
                   <input type="text" name="priceProgram[]" class="form-control" required>
+              </div>
+              <div class="form-group">
+                  <label>Kuota Program</label>
+                  <input type="text" name="kuotaProgram[]" class="form-control" required>
               </div>
               <div class="form-group waktu-container">
                   <label>Waktu Program</label>

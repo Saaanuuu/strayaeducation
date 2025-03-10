@@ -2,7 +2,7 @@
 include '../koneksi.php';
 
 session_start();
-if (!isset($_SESSION['login'])) {
+if (!isset($_SESSION['login']) || $_SESSION['role'] != "1") {
     header("Location: login.php?alert=not_logged_in");
     exit;
 }
@@ -11,9 +11,10 @@ if (isset($_POST['save'])) {
     $email = htmlspecialchars($_POST['email']);
     $fullName = htmlspecialchars($_POST['fullName']);
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $role = "1";
 
-    $SQL = "INSERT INTO t_user (email, fullName, password) 
-            VALUES ('$email', '$fullName', '$password')";
+    $SQL = "INSERT INTO t_user (email, fullName, password, role) 
+            VALUES ('$email', '$fullName', '$password', '$role')";
 
     if (mysqli_query($conn, $SQL)) {
         header("Location: index.php#manage");
@@ -89,16 +90,14 @@ if (isset($_POST['delete'])) {
     <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
 
     <!-- Main CSS File -->
-    <link
-        href="../assets/css/main.css"
-        rel="stylesheet" />
+    <link href="../assets/css/main.css" rel="stylesheet" />
 </head>
 
 <body class="index-page">
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div
             class="container-fluid container-xl position-relative d-flex align-items-center">
-            <a href="../admin/index.php" class="logo d-flex align-items-center me-auto">
+            <a href="../administrator/index.php" class="logo d-flex align-items-center me-auto">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <img src="../assets/img/straya.png" alt="" />
                 <!-- <h1 class="sitename">STRAYA LANGUAGE INSTITUTE</h1> -->
@@ -108,9 +107,22 @@ if (isset($_POST['delete'])) {
                 <ul>
                     <li><a href="index.php#hero">Home</a></li>
                     <li><a href="index.php#manage">Manage User</a></li>
-                    <li><a href="../admin/beasiswa/viewBeasiswa.php">Beasiswa</a></li>
-                    <li><a href="../admin/program/viewProgram.php">Program</a></li>
-                    <li><a href="logout.php">Logout</a></li>
+                    <li><a href="../administrator/beasiswa/viewBeasiswa.php">Beasiswa</a></li>
+                    <li><a href="../administrator/program/viewProgram.php">Program</a></li>
+                    <li class="nav-item dropdown d-flex align-items-center">
+                        <span class="me-2 fw-bold text-white">Hello, <?= $_SESSION["fullName"] ?></span>
+                        <div class="profile-picture bg-light" id="userDropdown">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
+                            <li><a class="dropdown-item" href="?view=viewProfile"><i class="fas fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="?view=changePassword"><i class="fas fa-lock me-2"></i> Change Password</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
@@ -250,17 +262,17 @@ if (isset($_POST['delete'])) {
 
                             <div class="form-group">
                                 <label>Full Name</label>
-                                <input value="<?php echo $d['fullName'] ?>" type="text" name="fullName" id="fullName" class="form-control" placeholder="Full Name" autocomplete="off" required="">
+                                <input value="<?php echo $d['fullName'] ?>" type="text" name="fullName" id="fullName_<?php echo $d['id'] ?>" class="form-control" placeholder="Full Name" autocomplete="off" required="">
                             </div>
                             <br>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input value="<?php echo $d['email'] ?>" type="text" name="email" id="email" class="form-control" placeholder="Email" autocomplete="off" required="">
+                                <input value="<?php echo $d['email'] ?>" type="text" name="email" id="email_<?php echo $d['id'] ?>" class="form-control" placeholder="Email" autocomplete="off" required="">
                             </div>
                         </div>
                         <div class="modal-footer no-bd">
-                            <button type="submit" name="update" class="btn btn-primary"><i class="fa fa-save"></i>Save</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i> Close</button>
+                            <button type="submit" name="update" class="btn btn-primary"><i class="fa fa-save"></i>Simpan</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i> Tutup</button>
                         </div>
                     </form>
                 </div>
@@ -329,15 +341,15 @@ if (isset($_POST['delete'])) {
                 <div class="col-lg-2 col-md-3 footer-links">
                     <h4>Menu</h4>
                     <ul>
-                        <li><i class="bi bi-chevron-right"></i> <a href="../admin/index.php#hero">Home</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="../administrator/index.php#hero">Home</a></li>
                         <li>
-                            <i class="bi bi-chevron-right"></i> <a href="../admin/index.php#manage">Manage User</a>
+                            <i class="bi bi-chevron-right"></i> <a href="../administrator/index.php#manage">Manage User</a>
                         </li>
                         <li>
-                            <i class="bi bi-chevron-right"></i> <a href="../admin/beasiswa/viewBeasiswa.php">Beasiswa</a>
+                            <i class="bi bi-chevron-right"></i> <a href="../administrator/beasiswa/viewBeasiswa.php">Beasiswa</a>
                         </li>
                         <li>
-                            <i class="bi bi-chevron-right"></i> <a href="../admin/program/viewProgram.php">Program</a>
+                            <i class="bi bi-chevron-right"></i> <a href="../administrator/program/viewProgram.php">Program</a>
                         </li>
                     </ul>
                 </div>

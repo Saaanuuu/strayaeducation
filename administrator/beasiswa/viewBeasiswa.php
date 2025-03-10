@@ -178,7 +178,20 @@ if (isset($_POST['delete'])) {
                     <li><a href="../index.php#manage">Manage User</a></li>
                     <li><a href="../beasiswa/viewBeasiswa.php">Beasiswa</a></li>
                     <li><a href="../program/viewProgram.php">Program</a></li>
-                    <li><a href="../logout.php">Logout</a></li>
+                    <li class="nav-item dropdown d-flex align-items-center">
+                        <span class="me-2 fw-bold text-white">Hello, <?= $_SESSION["fullName"] ?></span>
+                        <div class="profile-picture bg-light" id="userDropdown">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
+                            <li><a class="dropdown-item" href="?view=viewProfile"><i class="fas fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="?view=changePassword"><i class="fas fa-lock me-2"></i> Change Password</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>

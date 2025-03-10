@@ -1711,6 +1711,21 @@ section,
 /*--------------------------------------------------------------
 # Program Details Section
 --------------------------------------------------------------*/
+.modal-header .close {
+  padding: 1rem;
+  margin: -1rem -1rem -1rem auto;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #000;
+  opacity: 0.5;
+  background-color: transparent;
+  border: 0;
+}
+
+.modal-header .close:hover {
+  opacity: 1;
+}
+
 .program-details .program-details-slider img {
   width: 100%;
 }
@@ -1847,6 +1862,104 @@ section,
   font-size: 20px;
   margin-right: 8px;
   color: var(--accent-color);
+}
+
+/* Navmenu */
+.navmenu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Pastikan menu rata ke kanan */
+}
+
+/* Nav-item */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.nav-item span {
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+  display: block;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.profile-picture:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.1); /* Efek zoom kecil saat hover */
+}
+
+.profile-picture i {
+  font-size: 24px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.profile-picture:hover i {
+  color: #000; /* Warna ikon berubah saat hover */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  right: 0;
+  left: auto;
+  top: 100%;
+  width: max-content; /* Lebar menyesuaikan dengan konten */
+  white-space: nowrap; /* Cegah teks turun ke bawah */
+  padding: 0.5rem 0; /* Tambahkan padding agar terlihat rapi */
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: block !important;
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  color: #333;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa; /* Warna hover */
+  color: #000; /* Warna teks saat hover */
+}
+
+.dropdown-item i {
+  margin-right: 10px; /* Jarak antara ikon dan teks */
+  font-size: 18px; /* Ukuran ikon */
+  color: #555; /* Warna ikon */
+}
+
+/* Dropdown Divider */
+.dropdown-divider {
+  border-top: 1px solid #e9ecef;
+  margin: 0.5rem 0; /* Jarak atas dan bawah */
 }
 
 /*--------------------------------------------------------------
