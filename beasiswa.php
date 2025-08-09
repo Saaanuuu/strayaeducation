@@ -34,7 +34,9 @@ $benefits = json_decode($beasiswa['benefitBeasiswa'], true);
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
   <!-- Vendor CSS Files -->
@@ -50,8 +52,7 @@ $benefits = json_decode($beasiswa['benefitBeasiswa'], true);
 
 <body class="index-page">
   <header id="header" class="header d-flex align-items-center fixed-top">
-    <div
-      class="container-fluid container-xl position-relative d-flex align-items-center">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
       <a href="index.php" class="logo d-flex align-items-center me-auto">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <img src="assets/img/straya.png" alt="" />
@@ -74,12 +75,12 @@ $benefits = json_decode($beasiswa['benefitBeasiswa'], true);
                 <i class="fas fa-user"></i>
               </div>
               <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
-                <li><a class="dropdown-item" href="?view=viewProfile"><i class="fas fa-user me-2"></i> Profile</a></li>
-                <li><a class="dropdown-item" href="?view=changePassword"><i class="fas fa-lock me-2"></i> Change Password</a></li>
-                <li>
-                  <hr class="dropdown-divider">
+                <li><a class="dropdown-item" href="riwayat.php"><i class="fas fa-history me-2"></i> Riwayat</a></li>
+                <li><a class="dropdown-item" href="pembayaran.php"><i class="fas fa-money-bill-wave me-2"></i>
+                    Pembayaran</a></li>
+                <li><a class="dropdown-item" href="administrator/logout.php"><i class="fas fa-sign-out-alt me-2"></i>
+                    Logout</a>
                 </li>
-                <li><a class="dropdown-item" href="administrator/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
               </ul>
             </li>
           <?php else: ?>
@@ -95,7 +96,8 @@ $benefits = json_decode($beasiswa['benefitBeasiswa'], true);
   <main class="main">
 
     <!-- Page Title -->
-    <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/page-title-bg.webp);">
+    <div class="page-title dark-background" data-aos="fade"
+      style="background-image: url(assets/img/page-title-bg.webp);">
       <div class="container position-relative">
         <h1>Beasiswa Details</h1>
         <nav class="breadcrumbs">
@@ -139,7 +141,8 @@ $benefits = json_decode($beasiswa['benefitBeasiswa'], true);
           </div>
 
           <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-            <img src="assets/img/fileImage/<?php echo htmlspecialchars($beasiswa['gambarBeasiswa']); ?>" alt="Gambar Beasiswa" class="img-fluid beasiswa-img">
+            <img src="assets/img/fileImage/<?php echo htmlspecialchars($beasiswa['gambarBeasiswa']); ?>"
+              alt="Gambar Beasiswa" class="img-fluid beasiswa-img">
             <h3>
               <?php echo htmlspecialchars($beasiswa['motoBeasiswa']); ?>
             </h3>
@@ -179,9 +182,12 @@ $benefits = json_decode($beasiswa['benefitBeasiswa'], true);
             </i>
             <p>Pusat Informasi dan Konsultasi Beasiswa di NTB</p>
             <p class="mt-3">
-              <strong>Phone:</strong> <span><a href="https://wa.me/6287872690246" target="_blank">+62 878-7269-0246</a></span>
+              <strong>Phone:</strong> <span><a href="https://wa.me/6287872690246" target="_blank">+62
+                  878-7269-0246</a></span>
             </p>
-            <p><strong>Email:</strong> <span><a href="https://mail.google.com/mail/?view=cm&fs=1&to=straya.institute@gmail.com" target="_blank">straya.institute@gmail.com</a></span></p>
+            <p><strong>Email:</strong> <span><a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=straya.institute@gmail.com"
+                  target="_blank">straya.institute@gmail.com</a></span></p>
           </div>
           <div class="social-links d-flex mt-4">
             <!-- <a href=""><i class="bi bi-twitter-x"></i></a> -->
@@ -242,10 +248,8 @@ $benefits = json_decode($beasiswa['benefitBeasiswa'], true);
   </footer>
 
   <!-- Scroll Top -->
-  <a
-    href="#"
-    id="scroll-top"
-    class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>

@@ -16,7 +16,9 @@ if (isset($_POST['save'])) {
     $benefitProgram = json_encode($_POST['benefitProgram']);
     $deskripsiProgram = htmlspecialchars($_POST['deskripsiProgram']);
 
-    $fileName = basename($_FILES["gambar"]["name"]);
+    $originalName = basename($_FILES["gambar"]["name"]);
+    $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+    $fileName = uniqid('program_', true) . '.' . $extension;
     $targetDir = "../../assets/img/fileImage/";
     $targetFilePath = $targetDir . $fileName;
 
@@ -33,24 +35,31 @@ if (isset($_POST['update'])) {
     $idProgram = $_POST['idProgram'];
     $namaProgram = htmlspecialchars($_POST['namaProgram']);
     $deskripsiProgram = htmlspecialchars($_POST['deskripsiProgram']);
-
-    // Ambil data dari form
     $paketProgram = json_encode($_POST['paketProgram'] ?? []);
     $priceProgram = json_encode($_POST['priceProgram'] ?? []);
     $kuotaProgram = json_encode($_POST['kuotaProgram'] ?? []);
     $waktuProgram = json_encode($_POST['waktuProgram'] ?? []);
     $benefitProgram = json_encode($_POST['benefitProgram'] ?? []);
 
+    $targetDir = "../../assets/img/fileImage/";
+
     if (!empty($_FILES["gambar"]["name"])) {
-        $targetDir = "../../assets/img/fileImage/";
-        $fileName = basename($_FILES["gambar"]["name"]);
+        $originalName = basename($_FILES["gambar"]["name"]);
+        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        $fileName = uniqid('program_', true) . '.' . $extension;
         $targetFilePath = $targetDir . $fileName;
 
         if (move_uploaded_file($_FILES["gambar"]["tmp_name"], $targetFilePath)) {
+            // Ambil gambar lama
             $queryOldImage = "SELECT gambarProgram FROM t_program WHERE idProgram='$idProgram'";
             $resultOldImage = mysqli_query($conn, $queryOldImage);
             $oldImage = mysqli_fetch_assoc($resultOldImage)['gambarProgram'];
-            if (!empty($oldImage) && file_exists($targetDir . $oldImage)) {
+
+            // Hapus gambar lama jika tidak digunakan program lain
+            $queryCheck = "SELECT COUNT(*) as count FROM t_program WHERE gambarProgram='$oldImage'";
+            $resultCheck = mysqli_query($conn, $queryCheck);
+            $count = mysqli_fetch_assoc($resultCheck)['count'];
+            if ($count <= 1 && file_exists($targetDir . $oldImage)) {
                 unlink($targetDir . $oldImage);
             }
 
@@ -88,17 +97,22 @@ if (isset($_POST['update'])) {
 if (isset($_POST['delete'])) {
     $idProgram = $_POST['idProgram'];
 
+    // Ambil nama gambar
     $queryImage = "SELECT gambarProgram FROM t_program WHERE idProgram='$idProgram'";
     $resultImage = mysqli_query($conn, $queryImage);
     $image = mysqli_fetch_assoc($resultImage)['gambarProgram'];
 
-    $targetDir = "../../assets/img/fileImage/";
-    if (!empty($image) && file_exists($targetDir . $image)) {
-        unlink($targetDir . $image);
-    }
-
+    // Hapus program
     $SQL = "DELETE FROM t_program WHERE idProgram='$idProgram'";
     if (mysqli_query($conn, $SQL)) {
+        // Cek apakah gambar masih digunakan
+        $queryCheck = "SELECT COUNT(*) as count FROM t_program WHERE gambarProgram='$image'";
+        $resultCheck = mysqli_query($conn, $queryCheck);
+        $count = mysqli_fetch_assoc($resultCheck)['count'];
+        if ($count == 0 && file_exists($targetDir . $image)) {
+            unlink($targetDir . $image);
+        }
+
         header("Location: viewProgram.php");
         exit();
     } else {
@@ -124,7 +138,9 @@ if (isset($_POST['delete'])) {
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Vendor CSS Files -->
@@ -142,8 +158,7 @@ if (isset($_POST['delete'])) {
 
     <!-- Header -->
     <header id="header" class="header d-flex align-items-center fixed-top">
-        <div
-            class="container-fluid container-xl position-relative d-flex align-items-center">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
             <a href="../index.php" class="logo d-flex align-items-center me-auto">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <img src="../../assets/img/straya.png" alt="" />
@@ -153,7 +168,17 @@ if (isset($_POST['delete'])) {
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="../index.php#hero">Home</a></li>
-                    <li><a href="../index.php#manage">Manage User</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="manageDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Manage
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="manageDropdown">
+                            <li><a class="dropdown-item" href="../index.php#manage">Manage User</a></li>
+                            <li><a class="dropdown-item" href="../index.php#pendaftaran">Pendaftaran</a></li>
+                            <li><a class="dropdown-item" href="../index.php#presensi">Presensi</a></li>
+                        </ul>
+                    </li>
                     <li><a href="../beasiswa/viewBeasiswa.php">Beasiswa</a></li>
                     <li><a href="../program/viewProgram.php">Program</a></li>
                     <li class="nav-item dropdown d-flex align-items-center">
@@ -162,7 +187,8 @@ if (isset($_POST['delete'])) {
                             <i class="fas fa-user"></i>
                         </div>
                         <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
-                            <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                            <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i>
+                                    Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -225,22 +251,29 @@ if (isset($_POST['delete'])) {
                                         $query = mysqli_query($conn, 'SELECT * FROM t_program');
 
                                         while ($t_program = mysqli_fetch_array($query)) {
-                                        ?>
+                                            ?>
                                             <tr>
                                                 <td style="text-align: center;"><?php echo $no++; ?></td>
-                                                <td style="text-align: center;"><?php echo $t_program['namaProgram']; ?></td>
+                                                <td style="text-align: center;"><?php echo $t_program['namaProgram']; ?>
+                                                </td>
                                                 <td style="text-align: center;">
-                                                    <img src="../../assets/img/fileImage/<?php echo $t_program['gambarProgram']; ?>" alt="Program Image" width="300">
+                                                    <img src="../../assets/img/fileImage/<?php echo $t_program['gambarProgram']; ?>"
+                                                        alt="Program Image" width="300">
                                                 </td>
                                                 <td style="text-align: center;">
                                                     <div class="btn-group" role="group">
-                                                        <a href="#modalEditProgram<?php echo $t_program['idProgram']; ?>" data-bs-toggle="modal" title="Edit" class="btn btn-xs btn-primary">
+                                                        <a href="#modalEditProgram<?php echo $t_program['idProgram']; ?>"
+                                                            data-bs-toggle="modal" title="Edit"
+                                                            class="btn btn-xs btn-primary">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <a href="#modalDeleteProgram<?php echo $t_program['idProgram']; ?>" data-bs-toggle="modal" title="Delete" class="btn btn-xs btn-danger">
+                                                        <a href="#modalDeleteProgram<?php echo $t_program['idProgram']; ?>"
+                                                            data-bs-toggle="modal" title="Delete"
+                                                            class="btn btn-xs btn-danger">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
-                                                        <a href="viewDetailProgram.php?id=<?php echo $t_program['idProgram']; ?>" title="View Details" class="btn btn-xs btn-info">
+                                                        <a href="viewDetailProgram.php?id=<?php echo $t_program['idProgram']; ?>"
+                                                            title="View Details" class="btn btn-xs btn-info">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
                                                     </div>
@@ -318,8 +351,10 @@ if (isset($_POST['delete'])) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-save"></i>Save</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i> Close</button>
+                        <button type="submit" name="save" class="btn btn-primary"><i
+                                class="fa fa-save"></i>Save</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i>
+                            Close</button>
                     </div>
                 </form>
             </div>
@@ -331,7 +366,7 @@ if (isset($_POST['delete'])) {
     <?php
     $p = mysqli_query($conn, "SELECT * FROM t_program");
     while ($d = mysqli_fetch_array($p)) {
-    ?>
+        ?>
         <div class="modal fade" id="modalEditProgram<?php echo $d['idProgram'] ?>" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -347,13 +382,15 @@ if (isset($_POST['delete'])) {
 
                             <div class="form-group">
                                 <label>Nama Program</label>
-                                <input type="text" name="namaProgram" value="<?php echo $d['namaProgram'] ?>" class="form-control" required>
+                                <input type="text" name="namaProgram" value="<?php echo $d['namaProgram'] ?>"
+                                    class="form-control" required>
                             </div>
 
                             <br>
                             <div class="form-group">
                                 <label>Deskripsi Program</label>
-                                <textarea name="deskripsiProgram" class="form-control" required><?php echo $d['deskripsiProgram'] ?></textarea>
+                                <textarea name="deskripsiProgram" class="form-control"
+                                    required><?php echo $d['deskripsiProgram'] ?></textarea>
                             </div>
 
                             <br>
@@ -368,27 +405,34 @@ if (isset($_POST['delete'])) {
                                 $benefitPrograms = json_decode($d['benefitProgram'], true) ?? [];
 
                                 foreach ($paketPrograms as $index => $paketProgram) {
-                                ?>
+                                    ?>
                                     <div class="program-group">
                                         <div class="mb-3">
-                                            <button type="button" class="btn btn-danger btn-sm remove-paket">Hapus Paket</button>
+                                            <button type="button" class="btn btn-danger btn-sm remove-paket">Hapus
+                                                Paket</button>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Nama Paket</label>
-                                            <input type="text" name="paketProgram[]" value="<?php echo htmlspecialchars($paketProgram); ?>" class="form-control" required>
+                                            <input type="text" name="paketProgram[]"
+                                                value="<?php echo htmlspecialchars($paketProgram); ?>" class="form-control"
+                                                required>
                                         </div>
 
                                         <br>
                                         <div class="form-group">
                                             <label>Price Program</label>
-                                            <input type="text" name="priceProgram[]" value="<?php echo htmlspecialchars($pricePrograms[$index] ?? ''); ?>" class="form-control" required>
+                                            <input type="text" name="priceProgram[]"
+                                                value="<?php echo htmlspecialchars($pricePrograms[$index] ?? ''); ?>"
+                                                class="form-control" required>
                                         </div>
 
                                         <br>
                                         <div class="form-group">
                                             <label>Kuota Program</label>
-                                            <input type="text" name="kuotaProgram[]" value="<?php echo htmlspecialchars($kuotaPrograms[$index] ?? ''); ?>" class="form-control" required>
+                                            <input type="text" name="kuotaProgram[]"
+                                                value="<?php echo htmlspecialchars($kuotaPrograms[$index] ?? ''); ?>"
+                                                class="form-control" required>
                                         </div>
 
                                         <br>
@@ -397,7 +441,9 @@ if (isset($_POST['delete'])) {
                                             <?php if (!empty($waktuPrograms[$index])) { ?>
                                                 <?php foreach ($waktuPrograms[$index] as $waktu) { ?>
                                                     <div class="d-flex mt-2">
-                                                        <input type="text" name="waktuProgram[<?php echo $index; ?>][]" value="<?php echo htmlspecialchars($waktu); ?>" class="form-control" required>
+                                                        <input type="text" name="waktuProgram[<?php echo $index; ?>][]"
+                                                            value="<?php echo htmlspecialchars($waktu); ?>" class="form-control"
+                                                            required>
                                                         <button type="button" class="btn btn-danger btn-sm ms-2 remove-field">-</button>
                                                     </div>
                                                 <?php } ?>
@@ -412,7 +458,9 @@ if (isset($_POST['delete'])) {
                                             <?php if (!empty($benefitPrograms[$index])) { ?>
                                                 <?php foreach ($benefitPrograms[$index] as $benefit) { ?>
                                                     <div class="d-flex mt-2">
-                                                        <input type="text" name="benefitProgram[<?php echo $index; ?>][]" value="<?php echo htmlspecialchars($benefit); ?>" class="form-control" required>
+                                                        <input type="text" name="benefitProgram[<?php echo $index; ?>][]"
+                                                            value="<?php echo htmlspecialchars($benefit); ?>" class="form-control"
+                                                            required>
                                                         <button type="button" class="btn btn-danger btn-sm ms-2 remove-field">-</button>
                                                     </div>
                                                 <?php } ?>
@@ -425,18 +473,22 @@ if (isset($_POST['delete'])) {
                                 <?php } ?>
                             </div>
 
-                            <button type="button" class="btn btn-primary add-edit-paket" data-idprogram="<?php echo $d['idProgram']; ?>">Tambah Paket Program</button>
+                            <button type="button" class="btn btn-primary add-edit-paket"
+                                data-idprogram="<?php echo $d['idProgram']; ?>">Tambah Paket Program</button>
 
                             <div class="form-group mt-3">
                                 <label>Upload Gambar</label>
                                 <input type="file" name="gambar" class="form-control">
                                 <br>
-                                <img src="../../assets/img/fileImage/<?php echo htmlspecialchars($d['gambarProgram']); ?>" width="100px" alt="Gambar">
+                                <img src="../../assets/img/fileImage/<?php echo htmlspecialchars($d['gambarProgram']); ?>"
+                                    width="100px" alt="Gambar">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" name="update" class="btn btn-primary"><i class="fa fa-save"></i>Save</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i> Close</button>
+                            <button type="submit" name="update" class="btn btn-primary"><i
+                                    class="fa fa-save"></i>Save</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i>
+                                Close</button>
                         </div>
                     </form>
                 </div>
@@ -449,8 +501,9 @@ if (isset($_POST['delete'])) {
     <?php
     $c = mysqli_query($conn, 'SELECT * from t_program');
     while ($row = mysqli_fetch_array($c)) {
-    ?>
-        <div class="modal fade" id="modalDeleteProgram<?php echo $row['idProgram'] ?>" tabindex="-1" role="dialog" aria-hidden="true">
+        ?>
+        <div class="modal fade" id="modalDeleteProgram<?php echo $row['idProgram'] ?>" tabindex="-1" role="dialog"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header no-bd">
@@ -497,8 +550,10 @@ if (isset($_POST['delete'])) {
                     </div>
                     <div class="social-links d-flex mt-4">
                         <!-- <a href=""><i class="bi bi-twitter-x"></i></a> -->
-                        <a href="https://www.facebook.com/straya.institute" target="_blank"><i class="bi bi-facebook"></i></a>
-                        <a href="https://www.instagram.com/straya.institute" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.facebook.com/straya.institute" target="_blank"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/straya.institute" target="_blank"><i
+                                class="bi bi-instagram"></i></a>
                         <!-- <a href=""><i class="bi bi-linkedin"></i></a> -->
                     </div>
                 </div>
@@ -523,17 +578,15 @@ if (isset($_POST['delete'])) {
 
         <div class="container copyright text-center mt-4">
             <p>
-                © <span>Copyright</span> <strong class="px-1 sitename">STRAYA LANGUAGE INSTITUTE</strong>
+                ©️ <span>Copyright</span> <strong class="px-1 sitename">STRAYA LANGUAGE INSTITUTE</strong>
                 <span>All Rights Reserved</span>
             </p>
         </div>
     </footer>
 
     <!-- Scroll Top -->
-    <a
-        href="#"
-        id="scroll-top"
-        class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
 
     <!-- Preloader -->
     <div id="preloader"></div>

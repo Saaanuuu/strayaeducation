@@ -24,14 +24,14 @@ if (isset($_POST['save'])) {
     $allowedTypes = array("jpg", "jpeg", "png", "gif");
     if (in_array($fileType, $allowedTypes)) {
         if (move_uploaded_file($_FILES["gambar"]["tmp_name"], $targetFilePath)) {
-            $SQL = "INSERT INTO t_beasiswa (namaBeasiswa, visiBeasiswa, misiBeasiswa, motoBeasiswa, deskripsiBeasiswa, benefitBeasiswa, gambarBeasiswa) 
+            $query = "INSERT INTO t_beasiswa (namaBeasiswa, visiBeasiswa, misiBeasiswa, motoBeasiswa, deskripsiBeasiswa, benefitBeasiswa, gambarBeasiswa) 
                     VALUES ('$namaBeasiswa', '$visiBeasiswa', '$misiBeasiswa', '$motoBeasiswa', '$deskripsiBeasiswa', '$benefitBeasiswa', '$fileName')";
 
-            if (mysqli_query($conn, $SQL)) {
+            if (mysqli_query($conn, $query)) {
                 header("Location: viewBeasiswa.php");
                 exit();
             } else {
-                echo "Error: " . $SQL . "<br>" . mysqli_error($conn);
+                echo "Error: " . $query . "<br>" . mysqli_error($conn);
             }
         } else {
             echo "Gagal mengupload gambar.";
@@ -146,7 +146,9 @@ if (isset($_POST['delete'])) {
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Vendor CSS Files -->
@@ -164,8 +166,7 @@ if (isset($_POST['delete'])) {
 
     <!-- Header -->
     <header id="header" class="header d-flex align-items-center fixed-top">
-        <div
-            class="container-fluid container-xl position-relative d-flex align-items-center">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
             <a href="../index.php" class="logo d-flex align-items-center me-auto">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <img src="../../assets/img/straya.png" alt="" />
@@ -175,7 +176,17 @@ if (isset($_POST['delete'])) {
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="../index.php#hero">Home</a></li>
-                    <li><a href="../index.php#manage">Manage User</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="manageDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Manage
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="manageDropdown">
+                            <li><a class="dropdown-item" href="../index.php#manage">Manage User</a></li>
+                            <li><a class="dropdown-item" href="../index.php#pendaftaran">Pendaftaran</a></li>
+                            <li><a class="dropdown-item" href="../index.php#presensi">Presensi</a></li>
+                        </ul>
+                    </li>
                     <li><a href="../beasiswa/viewBeasiswa.php">Beasiswa</a></li>
                     <li><a href="../program/viewProgram.php">Program</a></li>
                     <li class="nav-item dropdown d-flex align-items-center">
@@ -184,7 +195,8 @@ if (isset($_POST['delete'])) {
                             <i class="fas fa-user"></i>
                         </div>
                         <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
-                            <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                            <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i>
+                                    Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -248,22 +260,29 @@ if (isset($_POST['delete'])) {
                                         $query = mysqli_query($conn, 'SELECT * FROM t_beasiswa');
 
                                         while ($t_beasiswa = mysqli_fetch_array($query)) {
-                                        ?>
+                                            ?>
                                             <tr>
                                                 <td style="text-align: center;"><?php echo $no++; ?></td>
-                                                <td style="text-align: center;"><?php echo $t_beasiswa['namaBeasiswa']; ?></td>
+                                                <td style="text-align: center;"><?php echo $t_beasiswa['namaBeasiswa']; ?>
+                                                </td>
                                                 <td style="text-align: center;">
-                                                    <img src="../../assets/img/fileImage/<?php echo $t_beasiswa['gambarBeasiswa']; ?>" alt="Beasiswa Image" width="300">
+                                                    <img src="../../assets/img/fileImage/<?php echo $t_beasiswa['gambarBeasiswa']; ?>"
+                                                        alt="Beasiswa Image" width="300">
                                                 </td>
                                                 <td style="text-align: center;">
                                                     <div class="btn-group" role="group">
-                                                        <a href="#modalEditBeasiswa<?php echo $t_beasiswa['idBeasiswa']; ?>" data-bs-toggle="modal" title="Edit" class="btn btn-xs btn-primary">
+                                                        <a href="#modalEditBeasiswa<?php echo $t_beasiswa['idBeasiswa']; ?>"
+                                                            data-bs-toggle="modal" title="Edit"
+                                                            class="btn btn-xs btn-primary">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <a href="#modalDeleteBeasiswa<?php echo $t_beasiswa['idBeasiswa']; ?>" data-bs-toggle="modal" title="Delete" class="btn btn-xs btn-danger">
+                                                        <a href="#modalDeleteBeasiswa<?php echo $t_beasiswa['idBeasiswa']; ?>"
+                                                            data-bs-toggle="modal" title="Delete"
+                                                            class="btn btn-xs btn-danger">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
-                                                        <a href="viewDetailBeasiswa.php?id=<?php echo $t_beasiswa['idBeasiswa']; ?>" title="View Details" class="btn btn-xs btn-info">
+                                                        <a href="viewDetailBeasiswa.php?id=<?php echo $t_beasiswa['idBeasiswa']; ?>"
+                                                            title="View Details" class="btn btn-xs btn-info">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
                                                     </div>
@@ -295,38 +314,46 @@ if (isset($_POST['delete'])) {
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Nama Beasiswa</label>
-                            <input type="text" name="namaBeasiswa" id="namaBeasiswa" class="form-control" placeholder="Nama Beasiswa" autocomplete="off" required="">
+                            <input type="text" name="namaBeasiswa" id="namaBeasiswa" class="form-control"
+                                placeholder="Nama Beasiswa" autocomplete="off" required="">
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Visi Lembaga</label>
-                            <input type="text" name="visiBeasiswa" id="visiBeasiswa" class="form-control" placeholder="Visi Lembaga" autocomplete="off" required="">
+                            <input type="text" name="visiBeasiswa" id="visiBeasiswa" class="form-control"
+                                placeholder="Visi Lembaga" autocomplete="off" required="">
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Misi Lembaga</label>
-                            <input type="text" name="misiBeasiswa" id="misiBeasiswa" class="form-control" placeholder="Misi Lembaga" autocomplete="off" required="">
+                            <input type="text" name="misiBeasiswa" id="misiBeasiswa" class="form-control"
+                                placeholder="Misi Lembaga" autocomplete="off" required="">
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Moto Lembaga</label>
-                            <input type="text" name="motoBeasiswa" id="motoBeasiswa" class="form-control" placeholder="Moto Lembaga" autocomplete="off" required="">
+                            <input type="text" name="motoBeasiswa" id="motoBeasiswa" class="form-control"
+                                placeholder="Moto Lembaga" autocomplete="off" required="">
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Deskripsi Beasiswa</label>
-                            <input type="text" name="deskripsiBeasiswa" id="deskripsiBeasiswa" class="form-control" placeholder="Deskripsi Beasiswa" autocomplete="off" required="">
+                            <input type="text" name="deskripsiBeasiswa" id="deskripsiBeasiswa" class="form-control"
+                                placeholder="Deskripsi Beasiswa" autocomplete="off" required="">
                         </div>
                         <br>
                         <div class="form-group">
                             <label>Benefit Beasiswa</label>
                             <div id="benefit-container" class="benefit-container">
                                 <div class="benefit-group d-flex mb-2">
-                                    <input type="text" name="benefitBeasiswa[]" class="form-control benefit-input" placeholder="Benefit Beasiswa" required>
-                                    <button type="button" class="btn btn-danger btn-sm remove-benefit ms-2" style="display: none;">Hapus</button>
+                                    <input type="text" name="benefitBeasiswa[]" class="form-control benefit-input"
+                                        placeholder="Benefit Beasiswa" required>
+                                    <button type="button" class="btn btn-danger btn-sm remove-benefit ms-2"
+                                        style="display: none;">Hapus</button>
                                 </div>
                             </div>
-                            <button type="button" id="add-benefit" class="btn btn-success btn-sm mt-2">Tambah Benefit</button>
+                            <button type="button" id="add-benefit" class="btn btn-success btn-sm mt-2">Tambah
+                                Benefit</button>
                         </div>
                         <br>
                         <div class="form-group">
@@ -335,8 +362,10 @@ if (isset($_POST['delete'])) {
                         </div>
                     </div>
                     <div class="modal-footer no-bd">
-                        <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-save"></i>Save</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i> Close</button>
+                        <button type="submit" name="save" class="btn btn-primary"><i
+                                class="fa fa-save"></i>Save</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i>
+                            Close</button>
                     </div>
                 </form>
             </div>
@@ -348,8 +377,9 @@ if (isset($_POST['delete'])) {
     <?php
     $p = mysqli_query($conn, 'SELECT * from t_beasiswa');
     while ($d = mysqli_fetch_array($p)) {
-    ?>
-        <div class="modal fade" id="modalEditBeasiswa<?php echo $d['idBeasiswa'] ?>" tabindex="-1" role="dialog" aria-hidden="true">
+        ?>
+        <div class="modal fade" id="modalEditBeasiswa<?php echo $d['idBeasiswa'] ?>" tabindex="-1" role="dialog"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header no-bd">
@@ -364,31 +394,41 @@ if (isset($_POST['delete'])) {
 
                             <div class="form-group">
                                 <label>Nama Beasiswa</label>
-                                <input type="text" name="namaBeasiswa" class="form-control" value="<?php echo $d['namaBeasiswa'] ?>" placeholder="Nama Beasiswa" autocomplete="off" required>
+                                <input type="text" name="namaBeasiswa" class="form-control"
+                                    value="<?php echo $d['namaBeasiswa'] ?>" placeholder="Nama Beasiswa" autocomplete="off"
+                                    required>
                             </div>
                             <br>
 
                             <div class="form-group">
                                 <label>Visi Lembaga</label>
-                                <input type="text" name="visiBeasiswa" class="form-control" value="<?php echo $d['visiBeasiswa'] ?>" placeholder="Visi Lembaga" autocomplete="off" required>
+                                <input type="text" name="visiBeasiswa" class="form-control"
+                                    value="<?php echo $d['visiBeasiswa'] ?>" placeholder="Visi Lembaga" autocomplete="off"
+                                    required>
                             </div>
                             <br>
 
                             <div class="form-group">
                                 <label>Misi Lembaga</label>
-                                <input type="text" name="misiBeasiswa" class="form-control" value="<?php echo $d['misiBeasiswa'] ?>" placeholder="Misi Lembaga" autocomplete="off" required>
+                                <input type="text" name="misiBeasiswa" class="form-control"
+                                    value="<?php echo $d['misiBeasiswa'] ?>" placeholder="Misi Lembaga" autocomplete="off"
+                                    required>
                             </div>
                             <br>
 
                             <div class="form-group">
                                 <label>Moto Lembaga</label>
-                                <input type="text" name="motoBeasiswa" class="form-control" value="<?php echo $d['motoBeasiswa'] ?>" placeholder="Moto Lembaga" autocomplete="off" required>
+                                <input type="text" name="motoBeasiswa" class="form-control"
+                                    value="<?php echo $d['motoBeasiswa'] ?>" placeholder="Moto Lembaga" autocomplete="off"
+                                    required>
                             </div>
                             <br>
 
                             <div class="form-group">
                                 <label>Deskripsi Beasiswa</label>
-                                <input type="text" name="deskripsiBeasiswa" class="form-control" value="<?php echo $d['deskripsiBeasiswa'] ?>" placeholder="Deskripsi Beasiswa" autocomplete="off" required>
+                                <input type="text" name="deskripsiBeasiswa" class="form-control"
+                                    value="<?php echo $d['deskripsiBeasiswa'] ?>" placeholder="Deskripsi Beasiswa"
+                                    autocomplete="off" required>
                             </div>
                             <br>
 
@@ -412,7 +452,8 @@ if (isset($_POST['delete'])) {
                                     }
                                     ?>
                                 </div>
-                                <button type="button" class="btn btn-success btn-sm mt-2 add-benefit" data-id="<?php echo $d['idBeasiswa'] ?>">Tambah Benefit</button>
+                                <button type="button" class="btn btn-success btn-sm mt-2 add-benefit"
+                                    data-id="<?php echo $d['idBeasiswa'] ?>">Tambah Benefit</button>
                             </div>
                             <br>
 
@@ -430,8 +471,10 @@ if (isset($_POST['delete'])) {
                             </div>
                         </div>
                         <div class="modal-footer no-bd">
-                            <button type="submit" name="update" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i> Tutup</button>
+                            <button type="submit" name="update" class="btn btn-primary"><i class="fa fa-save"></i>
+                                Simpan</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-undo"></i>
+                                Tutup</button>
                         </div>
                     </form>
                 </div>
@@ -444,8 +487,9 @@ if (isset($_POST['delete'])) {
     <?php
     $c = mysqli_query($conn, 'SELECT * from t_beasiswa');
     while ($row = mysqli_fetch_array($c)) {
-    ?>
-        <div class="modal fade" id="modalDeleteBeasiswa<?php echo $row['idBeasiswa'] ?>" tabindex="-1" role="dialog" aria-hidden="true">
+        ?>
+        <div class="modal fade" id="modalDeleteBeasiswa<?php echo $row['idBeasiswa'] ?>" tabindex="-1" role="dialog"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header no-bd">
@@ -462,8 +506,10 @@ if (isset($_POST['delete'])) {
                             <h4>Are you sure to remove this Beasiswa ?</h4>
                         </div>
                         <div class="modal-footer no-bd">
-                            <button type="submit" name="delete" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-undo"></i> Close</button>
+                            <button type="submit" name="delete" class="btn btn-danger"><i class="fa fa-trash"></i>
+                                Delete</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-undo"></i>
+                                Close</button>
                         </div>
                     </form>
                 </div>
@@ -492,8 +538,10 @@ if (isset($_POST['delete'])) {
                     </div>
                     <div class="social-links d-flex mt-4">
                         <!-- <a href=""><i class="bi bi-twitter-x"></i></a> -->
-                        <a href="https://www.facebook.com/straya.institute" target="_blank"><i class="bi bi-facebook"></i></a>
-                        <a href="https://www.instagram.com/straya.institute" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.facebook.com/straya.institute" target="_blank"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/straya.institute" target="_blank"><i
+                                class="bi bi-instagram"></i></a>
                         <!-- <a href=""><i class="bi bi-linkedin"></i></a> -->
                     </div>
                 </div>
@@ -523,10 +571,8 @@ if (isset($_POST['delete'])) {
     </footer>
 
     <!-- Scroll Top -->
-    <a
-        href="#"
-        id="scroll-top"
-        class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
 
     <!-- Preloader -->
     <div id="preloader"></div>

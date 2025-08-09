@@ -37,20 +37,16 @@ $benefits = json_decode($program['benefitProgram'], true);
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Vendor CSS Files -->
-    <link
-        href="../../assets/vendor/bootstrap/css/bootstrap.min.css"
-        rel="stylesheet" />
-    <link
-        href="../../assets/vendor/bootstrap-icons/bootstrap-icons.css"
-        rel="stylesheet" />
+    <link href="../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
     <link href="../../assets/vendor/aos/aos.css" rel="stylesheet" />
-    <link
-        href="../../assets/vendor/glightbox/css/glightbox.min.css"
-        rel="stylesheet" />
+    <link href="../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
     <link href="../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
 
     <!-- Main CSS File -->
@@ -59,8 +55,7 @@ $benefits = json_decode($program['benefitProgram'], true);
 
 <body class="index-page">
     <header id="header" class="header d-flex align-items-center fixed-top">
-        <div
-            class="container-fluid container-xl position-relative d-flex align-items-center">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
             <a href="../index.php" class="logo d-flex align-items-center me-auto">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <img src="../../assets/img/straya.png" alt="" />
@@ -79,12 +74,15 @@ $benefits = json_decode($program['benefitProgram'], true);
                             <i class="fas fa-user"></i>
                         </div>
                         <ul class="dropdown-menu dropdown-menu-end" id="dropdownMenu">
-                            <li><a class="dropdown-item" href="?view=viewProfile"><i class="fas fa-user me-2"></i> Profile</a></li>
-                            <li><a class="dropdown-item" href="?view=changePassword"><i class="fas fa-lock me-2"></i> Change Password</a></li>
+                            <li><a class="dropdown-item" href="?view=viewProfile"><i class="fas fa-user me-2"></i>
+                                    Profile</a></li>
+                            <li><a class="dropdown-item" href="?view=changePassword"><i class="fas fa-lock me-2"></i>
+                                    Change Password</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                            <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i>
+                                    Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -96,7 +94,8 @@ $benefits = json_decode($program['benefitProgram'], true);
     <main class="main">
 
         <!-- Page Title -->
-        <div class="page-title dark-background" data-aos="fade" style="background-image: url(../../assets/img/page-title-bg.webp);">
+        <div class="page-title dark-background" data-aos="fade"
+            style="background-image: url(../../assets/img/page-title-bg.webp);">
             <div class="container position-relative">
                 <h1>Program Details</h1>
                 <nav class="breadcrumbs">
@@ -115,7 +114,8 @@ $benefits = json_decode($program['benefitProgram'], true);
             <div class="container" data-aos="fade-up" data-aos-delay="100">
                 <div class="row gy-4">
                     <div class="col-lg-8">
-                        <img src="../../assets/img/fileImage/<?php echo htmlspecialchars($program['gambarProgram']); ?>" class="img-fluid" alt="">
+                        <img src="../../assets/img/fileImage/<?php echo htmlspecialchars($program['gambarProgram']); ?>"
+                            class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-4">
 
@@ -133,34 +133,38 @@ $benefits = json_decode($program['benefitProgram'], true);
                         </div>
 
                         <br>
-                        <?php foreach ($pakets as $index => $paket) : ?>
+                        <?php foreach ($pakets as $index => $paket): ?>
                             <div class="program-info" data-aos="fade-up" data-aos-delay="200">
                                 <h3><?php echo htmlspecialchars($paket); ?></h3>
                                 <ul>
-                                    <li><strong>Harga Program</strong>: <?php echo htmlspecialchars($price[$index] ?? 'Tidak tersedia'); ?></li>
+                                    <li><strong>Harga Program</strong>:
+                                        <?php echo htmlspecialchars($price[$index] ?? 'Tidak tersedia'); ?></li>
 
                                     <br>
-                                    <li><strong>Kuota Program</strong>: <?php echo htmlspecialchars($kuota[$index] ?? 'Tidak tersedia'); ?> Orang</li>
+                                    <li><strong>Kuota Program</strong>:
+                                        <?php echo htmlspecialchars($kuota[$index] ?? 'Tidak tersedia'); ?> Orang</li>
 
                                     <br>
                                     <li><strong>Waktu Program</strong>:</li>
                                     <ul>
-                                        <?php if (!empty($waktu[$index])) : ?>
-                                            <?php foreach ($waktu[$index] as $w) : ?>
-                                                <li><i class='bi bi-clock'></i> <span><?php echo htmlspecialchars($w); ?></span></li>
+                                        <?php if (!empty($waktu[$index])): ?>
+                                            <?php foreach ($waktu[$index] as $w): ?>
+                                                <li><i class='bi bi-clock'></i> <span><?php echo htmlspecialchars($w); ?></span>
+                                                </li>
                                             <?php endforeach; ?>
-                                        <?php else : ?>
+                                        <?php else: ?>
                                             <li><i class='bi bi-x-circle'></i> <span>Tidak tersedia</span></li>
                                         <?php endif; ?>
                                     </ul>
                                     <br>
                                     <li><strong>Benefit Program</strong>:</li>
                                     <ul>
-                                        <?php if (!empty($benefits[$index])) : ?>
-                                            <?php foreach ($benefits[$index] as $benefit) : ?>
-                                                <li><i class='bi bi-check-circle'></i> <span><?php echo htmlspecialchars($benefit); ?></span></li>
+                                        <?php if (!empty($benefits[$index])): ?>
+                                            <?php foreach ($benefits[$index] as $benefit): ?>
+                                                <li><i class='bi bi-check-circle'></i>
+                                                    <span><?php echo htmlspecialchars($benefit); ?></span></li>
                                             <?php endforeach; ?>
-                                        <?php else : ?>
+                                        <?php else: ?>
                                             <li><i class='bi bi-x-circle'></i> <span>Tidak tersedia</span></li>
                                         <?php endif; ?>
                                     </ul>
@@ -189,14 +193,19 @@ $benefits = json_decode($program['benefitProgram'], true);
                         </i>
                         <p>Pusat Informasi dan Konsultasi Beasiswa di NTB</p>
                         <p class="mt-3">
-                            <strong>Phone:</strong> <span><a href="https://wa.me/6287872690246" target="_blank">+62 878-7269-0246</a></span>
+                            <strong>Phone:</strong> <span><a href="https://wa.me/6287872690246" target="_blank">+62
+                                    878-7269-0246</a></span>
                         </p>
-                        <p><strong>Email:</strong> <span><a href="https://mail.google.com/mail/?view=cm&fs=1&to=straya.institute@gmail.com" target="_blank">straya.institute@gmail.com</a></span></p>
+                        <p><strong>Email:</strong> <span><a
+                                    href="https://mail.google.com/mail/?view=cm&fs=1&to=straya.institute@gmail.com"
+                                    target="_blank">straya.institute@gmail.com</a></span></p>
                     </div>
                     <div class="social-links d-flex mt-4">
                         <!-- <a href=""><i class="bi bi-twitter-x"></i></a> -->
-                        <a href="https://www.facebook.com/straya.institute" target="_blank"><i class="bi bi-facebook"></i></a>
-                        <a href="https://www.instagram.com/straya.institute" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.facebook.com/straya.institute" target="_blank"><i
+                                class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/straya.institute" target="_blank"><i
+                                class="bi bi-instagram"></i></a>
                         <!-- <a href=""><i class="bi bi-linkedin"></i></a> -->
                     </div>
                 </div>
@@ -221,17 +230,15 @@ $benefits = json_decode($program['benefitProgram'], true);
 
         <div class="container copyright text-center mt-4">
             <p>
-                © <span>Copyright</span> <strong class="px-1 sitename">STRAYA LANGUAGE INSTITUTE</strong>
+                ©️ <span>Copyright</span> <strong class="px-1 sitename">STRAYA LANGUAGE INSTITUTE</strong>
                 <span>All Rights Reserved</span>
             </p>
         </div>
     </footer>
 
     <!-- Scroll Top -->
-    <a
-        href="#"
-        id="scroll-top"
-        class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
 
     <!-- Preloader -->
     <div id="preloader"></div>
